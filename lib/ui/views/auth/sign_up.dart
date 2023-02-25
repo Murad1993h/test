@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:gokiiw/const/app_colors.dart';
 import 'package:gokiiw/styles/style.dart';
 import 'package:gokiiw/ui/route/route.dart';
 import 'package:gokiiw/ui/views/auth/otp.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../api/api.dart';
@@ -22,16 +24,58 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final _formKey = GlobalKey<FormState>();
   TextEditingController _usernameController = TextEditingController();
 
   TextEditingController _emailController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
 
   TextEditingController _passwordController = TextEditingController();
 
   TextEditingController _confirmpasswordController = TextEditingController();
+
+
+  _signup () async{
+    var data ={
+      'username': _usernameController.text,
+      'email ' : _emailController.text,
+      'phone' : _phoneController.text,
+      ' password' : _passwordController.text,
+      'confirm_password' : _confirmpasswordController.text,
+    };
+    var res = CallApi().postData(data, signUp );
+    var body = json.decode(res.body);
+    if(body['success']){
+      Navigator.push(context,
+        new MaterialPageRoute(builder: (context)=>Scaffold(
+
+        ))
+          );
+      
+    }
+
+  }
+
+
+
   bool _isLoading = false;
+  bool _isObscure = true;
+  bool _isbuttonactive = true;
 
   @override
+
+  /*void dispose(){
+    super.dispose();
+    _phoneController.dispose();
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+
+  }
+
+
+      */
+
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -66,7 +110,7 @@ class _SignUpState extends State<SignUp> {
                           fontSize: 80.sp, color: Colors.white,fontFamily:GoogleFonts.getFont('Kanit')),*/
                     ),
                     SizedBox(
-                      height: 50.h,
+                      height: 35.h,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 30, right: 30),
@@ -78,11 +122,40 @@ class _SignUpState extends State<SignUp> {
                             decoration:
                                 AppStyles().textFieldDecoration("User name "),
                           ),
+                          SizedBox(
+                            height: 13,
+                          ),
                           TextFormField(
                             controller: _emailController,
                             keyboardType: TextInputType.emailAddress,
                             decoration: AppStyles().textFieldDecoration(
                               "Email ",
+                            ),
+                          ),
+                          Container(
+                            child: IntlPhoneField(
+                              decoration: InputDecoration(
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.white)),
+                                hintStyle: TextStyle(
+                                  fontSize: 18.sp, color: Colors.white,
+                                  //fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              onChanged: (phone) {
+                                print(
+                                  phone.completeNumber,
+                                );
+                              },
+                              onCountryChanged: (country) {
+                                print(
+                                  'Country changed to: ' + country.name,
+                                );
+                              },
                             ),
                           ),
                           TextFormField(
@@ -91,6 +164,26 @@ class _SignUpState extends State<SignUp> {
                             decoration: AppStyles().textFieldDecoration(
                               "Password ",
                             ),
+                            onTap: () {
+                              setState(() {
+                                _isObscure = !_isObscure;
+                              });
+                              print(_isObscure);
+                            },
+                            obscureText: _isObscure,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'This field is required'.tr;
+                              }
+                              if (value.trim().length < 8) {
+                                return 'Password must be at least 8 characters in length';
+                              }
+                              // Return null if the entered password is valid
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 13,
                           ),
                           TextFormField(
                             controller: _confirmpasswordController,
@@ -98,6 +191,23 @@ class _SignUpState extends State<SignUp> {
                             decoration: AppStyles().textFieldDecoration(
                               "Confirm password ",
                             ),
+                            onTap: () {
+                              setState(() {
+                                _isObscure = !_isObscure;
+                              });
+                              print(_isObscure);
+                            },
+                            obscureText: _isObscure,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return 'This field is required'.tr;
+                              }
+                              if (value.trim().length < 8) {
+                                return 'Password must be at least 8 characters in length';
+                              }
+                              // Return null if the entered password is valid
+                              return null;
+                            },
                           ),
                         ],
                       ),
@@ -105,13 +215,56 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(
                       height: 40.h,
                     ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     Padding(
                       padding: const EdgeInsets.only(left: 70, right: 70),
                       child: Button(
-                        "Sign in",
-                        () => Get.toNamed(otp),
+                       _isLoading ? 'Creating.....'  :"Sign in",
+                          //onPressed:_handleSignup
+                            () => _isLoading ? null :_signup()
                       ),
                     ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                     /* Button("Sign Up,
 
@@ -119,11 +272,13 @@ class _SignUpState extends State<SignUp> {
                     ),*/
 
                     SizedBox(
-                      height: 60.h,
+                      height: 35.h,
                     ),
                     RichText(
                         text: TextSpan(
-                            text: "Already have an account?  ",
+                            text: _isLoading
+                                ? 'Creating...'
+                                : "Already have an account?  ",
                             style: TextStyle(
                                 fontSize: 18.sp,
                                 fontWeight: FontWeight.w300,
@@ -153,45 +308,42 @@ class _SignUpState extends State<SignUp> {
   }
 
 
-
-
-
-
-  void _handleLogin() async {
+ /* Future<void> _handleSignup() async {
     setState(() {
       _isLoading = true;
     });
 
-    var data = {
+    var data ={
 
-      //'email' : mailController.text,
+      'username': _usernameController.text,
+      'email ' : _emailController.text,
+      'phone' : _phoneController.text,
+      ' password' : _passwordController.text,
+      'confirm_password' : _confirmpasswordController.text,
 
     };
 
     var res = await CallApi().postData(data, 'register');
     var body = json.decode(res.body);
-    if(body['success']){
+    if (body['success']){
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', body['token']);
-      localStorage.setString('user', json.encode(body['user']));
+      localStorage.setString('user', jsonEncode(body['user']));
 
 
-      ()=> Get.toNamed(home);
 
-     /* Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => home()));*/
+      var userjson = localStorage.getString('user');
+      var user = jsonDecode('userjson');
+     ()=> Get.toNamed(home);
+
+
     }
 
-
-
-
     setState(() {
-      _isLoading = false;
+      _isLoading = true;
     });
 
 
 
-  }
+  }*/
 }

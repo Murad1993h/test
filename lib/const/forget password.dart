@@ -1,8 +1,8 @@
-/*
+
 
 import 'package:flutter/material.dart';
 
-class ResetPassword extends StatelessWidget {
+class ForgetPassword extends StatelessWidget {
 
   TextEditingController _emailController = TextEditingController();
 
@@ -70,4 +70,4 @@ class ResetPassword extends StatelessWidget {
     );
   }
 }
-*/
+

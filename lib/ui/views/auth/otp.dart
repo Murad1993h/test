@@ -92,10 +92,12 @@ class _OtpState extends State<Otp> {
                     padding: const EdgeInsets.all(8.0),
                     child: Center(
                       child: _onEditing
-                          ? const Text(
-                              'Resend code',
-                              style: TextStyle(color: Colors.white, fontSize: 16),
-                            )
+                          ? InkWell(onTap: ()=> Get.toNamed(resum),
+                            child: const Text(
+                                'Resend code',
+                                style: TextStyle(color: Colors.white, fontSize: 16),
+                              ),
+                          )
                           : Text(
                               'Your code: $_code',
                               style: TextStyle(color: Colors.white),

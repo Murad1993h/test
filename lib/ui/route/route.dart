@@ -1,6 +1,8 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:gokiiw/const/forget%20password.dart';
 import 'package:gokiiw/ui/views/auth/log_in.dart';
 import 'package:gokiiw/ui/views/auth/otp.dart';
+import 'package:gokiiw/ui/views/auth/resum_code.dart';
 
 
 import 'package:gokiiw/ui/views/auth/sign_up.dart';
@@ -14,6 +16,7 @@ import 'package:gokiiw/ui/views/home/qr/example.dart';
 //import 'package:gokiiw/ui/views/home/profile/profile_token.dart';
 //import 'package:gokiiw/ui/views/home/profile/tokens.dart';
 import 'package:gokiiw/ui/views/home/qr/qr_scan.dart';
+import 'package:gokiiw/ui/views/home/searce_page.dart';
 import 'package:gokiiw/ui/views/home/user_information.dart';
 import 'package:gokiiw/ui/views/home/your_token.dart';
 import '../views/splash_screen.dart';
@@ -38,6 +41,9 @@ const String information = '/information';
 const String tokens = '/tokens';
 const String privacy = '/privacy-policy';
 const String example = '/example';
+const String forget = '/forget-password';
+const String searce = '/searce-page';
+const String resum = '/Resum-Code';
 
 
 List<GetPage> getPages =[
@@ -67,7 +73,9 @@ List<GetPage> getPages =[
   GetPage(name: tokens, page: ()=> Tokens(),),
   GetPage(name: privacy, page: ()=> PrivacyPolicy(),),
   GetPage(name: example, page: ()=> Example(),),
-
+  GetPage(name: forget, page: ()=> ForgetPassword(),),
+  GetPage(name: searce, page: ()=> SearcePage(),),
+  GetPage(name: resum, page: ()=> ResumCode(),),
 
 
 

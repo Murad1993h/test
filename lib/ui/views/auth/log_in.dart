@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:gokiiw/const/app_colors.dart';
+import 'package:gokiiw/const/forget%20password.dart';
 import 'package:gokiiw/const/gradien.dart';
 import 'package:gokiiw/styles/style.dart';
 import 'package:gokiiw/ui/route/route.dart';
@@ -11,9 +12,17 @@ import 'package:gokiiw/ui/views/home/qr/example.dart';
 import 'package:gokiiw/widgets/button.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LogIn extends StatelessWidget {
+class LogIn extends StatefulWidget {
+  @override
+  State<LogIn> createState() => _LogInState();
+}
+
+class _LogInState extends State<LogIn> {
   TextEditingController _emailController = TextEditingController();
+
   TextEditingController _passwordController = TextEditingController();
+
+  bool _isObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -44,27 +53,78 @@ class LogIn extends StatelessWidget {
                   SizedBox(
                     height: 60.h,
                   ),
+
+
                   Padding(
                     padding: const EdgeInsets.only(left: 30, right: 30),
                     child: TextFormField(
+
                       controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: AppStyles().textFieldDecoration("Email",
-                      ),
+                      decoration: InputDecoration (
+
+
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white)
+                        ),
+                          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+                          hintText: "Email",
+
+
+
+                          hintStyle: TextStyle(
+                            fontSize: 18.sp,color: Colors.white,
+                            //fontWeight: FontWeight.bold,
+
+                          )
+                      ) ,
+                      style: TextStyle(color: Colors.white),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'This field is required'.tr;
+                        }
+                        if (!value.trim().contains("@")) {
+                          return 'Email must contain @ sign ';
+                        }
+                        // Return null if the entered username is valid
+                        return null;
+                      },
+
                     ),
                   ),
+
                   SizedBox(
                     height: 10.h,
                   ),
                   Padding(
                     padding:
                         const EdgeInsets.only(left: 30, right: 30, bottom: 0),
-                    child: TextFormField(
+                    child:
+
+                    TextFormField(
                       controller: _passwordController,
                       keyboardType: TextInputType.text,
                       decoration: AppStyles().textFieldDecoration(
                         "Password ",
+
                       ),
+                      onTap: (){
+                        setState(() {
+                          _isObscure = !_isObscure;
+                        });
+                        print(_isObscure);
+                      },
+                      obscureText: _isObscure,
+                      validator: (value){
+                        if (value == null || value.trim().isEmpty) {
+                          return 'This field is required'.tr;
+                        }
+                        if (value.trim().length < 8) {
+                          return 'Password must be at least 8 characters in length';
+                        }
+                        // Return null if the entered password is valid
+                        return null;
+
+                      },
                     ),
                   ),
                   TextButton(
@@ -73,7 +133,8 @@ class LogIn extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 150,bottom: 10),
                         child: InkWell(
-                          onTap: () => Get.toNamed(logIn),
+                          onTap: () => Get.toNamed(forget
+                          ),
                           child: Text(
                             'Forgot Password?',
                             style: TextStyle(

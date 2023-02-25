@@ -99,6 +99,7 @@ class _InformationState extends State<Information> {
                 controller: _genderController,
                 readOnly: true,
                 decoration: InputDecoration(
+
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   hintText: "Gender",
                   suffixIcon: DropdownButton<String>(
@@ -134,7 +135,7 @@ class _InformationState extends State<Information> {
               Padding(
                 padding: const EdgeInsets.only(left: 30, right: 30),
                 child: Button(
-                    "Seves",
+                    "Save",
                     gradient: LinearGradient(
                         begin: Alignment.centerLeft,
                         end: Alignment.bottomRight,

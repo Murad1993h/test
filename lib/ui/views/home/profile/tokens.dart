@@ -111,7 +111,7 @@ class Tokens extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 248, top: 11),
+                    padding: const EdgeInsets.only(left: 248, top: 12),
                     child: Column(
                       children: [Image.asset("assets/icons/Group 3.png")],
                     ),

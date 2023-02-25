@@ -10,6 +10,7 @@ import 'package:gokiiw/ui/route/route.dart';
 import 'package:gokiiw/ui/views/home/profile/profile.dart';
 
 import 'package:gokiiw/ui/views/home/qr/qr_scan.dart';
+import 'package:gokiiw/ui/views/home/searce_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../api/api.dart';
@@ -23,6 +24,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  final TextEditingController _searchController = TextEditingController();
 
 
   int _currentIndex = 0;
@@ -30,6 +32,12 @@ class _HomeState extends State<Home> {
     Home(),
     Profile(),
   ];
+
+  void _getUserInfo() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,23 +53,88 @@ class _HomeState extends State<Home> {
           color: Color(0xFF00A5AF),
         ),
         actions: [
+          /*TextFormField(
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                hintText: "Search here...",
+                hintStyle: TextStyle(color: Colors.black),
+                prefixIcon: Icon(
+                  Icons.search,
+
+                  size: 30,
+                )),
+          ),*/
+
+          /*Container(
+            //width: SizConfig.screchWidth(20),
+
+            decoration: BoxDecoration(
+              color: Colors.black45,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: TextField(
+              decoration: InputDecoration(
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                hintText: "Searce",
+                prefixIcon: Icon(Icons.search),
+                contentPadding: EdgeInsets.symmetric(
+
+                )
+              ),
+            ),
+          ),*/
+
+
+
           Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: Icon(
-              Icons.search,
-              size: 30.sp,
-              color: Colors.white,
+            padding: const EdgeInsets.only(right: 3),
+            child: IconButton(
+              icon: Icon(Icons.search,color: Colors.white,size: 30,),
+
+
+              onPressed: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (_) => const SearcePage())),
             ),
           ),
+
+
+
+
+
+
+
           Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(
+              icon: Icon(Icons.notifications_none,color: Colors.white,size: 30,),
+
+
+              onPressed: (){
+
+              }, ),
+          ),
+
+
+
+
+
+
+
+
+
+
+         /* Padding(
             padding: const EdgeInsets.only(right: 30),
             child: Icon(
               Icons.notifications_none,
               size: 30.sp,
               color: Colors.white,
             ),
-          ),
+          ),*/
         ],
+
+
       ),
       body: ListView.builder(
         scrollDirection: Axis.vertical,
@@ -269,7 +342,7 @@ class _HomeState extends State<Home> {
       ),*/
     );
   }
-  void logout() async{
+  /*void logout() async{
     // logout from the server ...
     var res = await CallApi().getData('logout');
     var body = json.decode(res.body);
@@ -283,5 +356,6 @@ class _HomeState extends State<Home> {
               builder: (context) => LogIn()));
     }
 
-  }
+  }*/
 }
+
